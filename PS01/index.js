@@ -6,6 +6,9 @@ var margin = {top: 66, right: 110, bottom: 20, left: 188},
 
 var scaleX= d3.scaleBand().range([0, width]);
 var scaleY = d3.scaleLinear().range([400, 0]);
+var scaleY2 = d3.scalePoint().range([400, 0]);
+var scaleY3 = d3.scalePoint().range([400, 0]);
+var scaleY4 = d3.scalePoint().range([400, 0]);
 
 var svg = d3.select("body").append("svg")
     .attr("width", width + margin.left + margin.right)
@@ -21,6 +24,11 @@ var nestedData = [];
 var formerDancers;
 var currentDancers;
 var Map = d3.map();
+var Map2 = d3.map();
+var Map3 = d3.map();
+var Map4 = d3.map();
+var Map5 = d3.map();
+var Map6 = d3.map();
 clicked=false;
 
 
@@ -54,8 +62,10 @@ var nonDanceEd = [{value: 1, text: "Completed Primary School"},
 
 
 var nonDanceEdLabel= nonDanceEd.forEach(function (d) {
-    Map.set(d.value, d.text);
+    Map2.set(d.value, d.text);
 });
+
+
 
 
 var whyStopCurrent= [ {value: 1, text: "Feeling to old to Continue"},
@@ -72,7 +82,7 @@ var whyStopCurrent= [ {value: 1, text: "Feeling to old to Continue"},
 ];
 
 var whyStopCurrentLabel= whyStopCurrent.forEach(function (d) {
-    Map.set(d.value, d.text);
+    Map3.set(d.value, d.text);
 });
 
 
@@ -89,7 +99,7 @@ var challengesCurrent= [ {value: 1, text: "Physical Problems"},
 ];
 
 var challengesCurrentLabel= challengesCurrent.forEach(function (d) {
-    Map.set(d.value, d.text);
+    Map4.set(d.value, d.text);
 });
 
 
@@ -107,7 +117,7 @@ var whyStopFormer= [ {value: 1, text: "Feeling to old to Continue"},
 ];
 
 var whyStopFormerLabel= whyStopFormer.forEach(function (d) {
-    Map.set(d.value, d.text);
+    Map5.set(d.value, d.text);
 });
 
 
@@ -124,7 +134,7 @@ var challengesFormer= [ {value: 1, text: "Physical Problems"},
 ];
 
 var challengesFormerLabel= challengesFormer.forEach(function (d) {
-    Map.set(d.value, d.text);
+    Map6.set(d.value, d.text);
 });
 ////////////////////////////////////////////////////////////Answer key maps////////////////////////////////////////////////////////////////
 
@@ -148,13 +158,32 @@ d3.csv('./data.csv', function(dataIn){
     currentDancers = nestedData.filter(function(d){return d.key == '1'})[0].values;
     formerDancers = nestedData.filter(function(d){return d.key == '2'})[0].values;
 
-   //Axis for "What Age do you think you will stop dancing?"
+   //Axis for "What AGE do you think you will stop dancing?"
     scaleY.domain([0, d3.max(dataIn.map(function(d){return +d.C12STPCR}))]);
     svg.append("g")
         .attr('class','yaxis')
         .call(d3.axisLeft(scaleY));
 
-    drawPoints(currentDancers);
+    //Axis for "Why do you think you will stop dancing?"
+    scaleY2.domain(dataIn.map(function(d){
+        return Map3.get(+d.C13STOP1)
+    }));
+    svg.append("g")
+        .attr('class','yaxis')
+        .call(d3.axisLeft(scaleY2))
+        .attr('transform', 'translate(150,0)');
+
+
+
+    //Axis for "What Challenges do you think will be most serious?"
+    /*scaleY3.domain([0, d3.max(dataIn.map(function(d){return +d.C15BMSCH}))]);
+    svg.append("g")
+        .attr('class','yaxis')
+        .call(d3.axisLeft(scaleY3))
+        .attr('transform', 'translate(300,0)');
+*/
+
+    //drawPoints(currentDancers);
 
 });
 
