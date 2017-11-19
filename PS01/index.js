@@ -22,7 +22,9 @@ var Map = d3.map();
 clicked=false;
 
 
-var axislabel = [{value: 1, text: "None"},
+
+///////////////////////////////////Answer key maps/////////////////////////////
+var danceEd = [{value: 1, text: "None"},
     {value: 2, text: "Diploma from Dance School"},
     {value: 3, text: "Diploma from Performing Arts School"},
     {value: 4, text: "Bachelor's Degree"},
@@ -34,12 +36,12 @@ var axislabel = [{value: 1, text: "None"},
 ];
 
 
-var LABEL= axislabel.forEach(function (d) {
+var danceEdLabel= danceEd.forEach(function (d) {
     Map.set(d.value, d.text);
 });
 
 
-var axislabel2 = [{value: 1, text: "Completed Primary School"},
+var nonDanceEd = [{value: 1, text: "Completed Primary School"},
     {value: 2, text: "Completed Secondary School"},
     {value: 3, text: "Post-Secondary Diploma, certificate"},
     {value: 4, text: "Bachelor's Degree"},
@@ -49,12 +51,12 @@ var axislabel2 = [{value: 1, text: "Completed Primary School"},
 ];
 
 
-var LABEL2= axislabel2.forEach(function (d) {
+var nonDanceEdLabel= nonDanceEd.forEach(function (d) {
     Map.set(d.value, d.text);
 });
 
 
-var whyStopCurrentLabel= [ {value: 1, text: "Feeling to old to Continue"},
+var whyStopCurrent= [ {value: 1, text: "Feeling to old to Continue"},
     {value: 2, text: "Financial Difficulties"},
     {value: 3, text: "Health/effect of Injuries"},
     {value: 4, text: "Dance work not likely to be available"},
@@ -67,7 +69,12 @@ var whyStopCurrentLabel= [ {value: 1, text: "Feeling to old to Continue"},
     {value: "D", text: "Did not answer"}
 ];
 
-var challengesCurrentLabel= [ {value: 1, text: "Physical Problems"},
+var whyStopCurrentLabel= whyStopCurrent.forEach(function (d) {
+    Map.set(d.value, d.text);
+});
+
+
+var challengesCurrent= [ {value: 1, text: "Physical Problems"},
     {value: 2, text: "Loss of Status"},
     {value: 3, text: "Loss of Income"},
     {value: 4, text: "Loss of Friends and Support Network"},
@@ -79,9 +86,12 @@ var challengesCurrentLabel= [ {value: 1, text: "Physical Problems"},
     {value: "D", text: "Did not answer"}
 ];
 
+var challengesCurrentLabel= challengesCurrent.forEach(function (d) {
+    Map.set(d.value, d.text);
+});
 
 
-var whyStopFormerLabel= [ {value: 1, text: "Feeling to old to Continue"},
+var whyStopFormer= [ {value: 1, text: "Feeling to old to Continue"},
     {value: 2, text: "Financial Difficulties"},
     {value: 3, text: "Health/effect of Injuries"},
     {value: 4, text: "Dance work not available"},
@@ -94,8 +104,12 @@ var whyStopFormerLabel= [ {value: 1, text: "Feeling to old to Continue"},
     {value: "D", text: "Did not answer"}
 ];
 
+var whyStopFormerLabel= whyStopFormer.forEach(function (d) {
+    Map.set(d.value, d.text);
+});
 
-var challengesFormerLabel= [ {value: 1, text: "Physical Problems"},
+
+var challengesFormer= [ {value: 1, text: "Physical Problems"},
     {value: 2, text: "Loss of Status"},
     {value: 3, text: "Loss of Income"},
     {value: 4, text: "Loss of Friends and Support Network"},
@@ -107,6 +121,12 @@ var challengesFormerLabel= [ {value: 1, text: "Physical Problems"},
     {value: "D", text: "Did not answer"}
 ];
 
+var challengesFormerLabel= challengesFormer.forEach(function (d) {
+    Map.set(d.value, d.text);
+});
+
+
+//tool tip
 var div = d3.select("body").append("div")
     .attr("class", "tooltip")
     .style("opacity", 0);
