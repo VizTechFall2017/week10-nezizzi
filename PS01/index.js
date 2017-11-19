@@ -23,15 +23,14 @@ var svg = d3.select("body").append("svg")
 var nestedData = [];
 var formerDancers;
 var currentDancers;
+clicked=false;
 var Map = d3.map();
 var Map2 = d3.map();
 var Map3 = d3.map();
 var Map4 = d3.map();
 var Map5 = d3.map();
 var Map6 = d3.map();
-clicked=false;
-
-
+var axisCoordinates = [{"x": 0}, {"x": 250}, {"x": 500}];
 
 ///////////////////////////////////////////////////Answer key maps//////////////////////////////////////////////
 var danceEd = [{value: 1, text: "None"},
@@ -182,7 +181,7 @@ d3.csv('./data.csv', function(dataIn){
         .attr('transform', 'translate(500,0)');
 
 
-    //drawPoints(currentDancers);
+    drawPoints(currentDancers);
 
 });
 
@@ -190,6 +189,31 @@ d3.csv('./data.csv', function(dataIn){
 
 function drawPoints(pointData){
 
+    var lineGenerator = d3.line()
+        .x(0)
+        .y(function(d){return scaleY(+d.C12STPCR)})
+        .curve(d3.curveCardinal);
+
+    svg.append('path')
+        .datum(function(d){return scaleY(+d.C12STPCR))
+        .attr('class', 'line')
+        .attr('d', lineGenerator)
+
+   /*
+   //create g element for each country
+    var countries = plot.selectAll('.country')
+        .data(timeseries)
+        .enter()
+        .append('g').attr('class','country');
+
+    //append path per country
+    countries.append('path')
+        .datum(function(d){return d.values})
+        .attr('class','countryPath')
+        .attr('d',function(array){
+            return lineGenerator(array);
+        })
+     */
 
 
 
