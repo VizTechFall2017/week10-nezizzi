@@ -5,7 +5,7 @@ var margin = {top: 66, right: 110, bottom: 20, left: 188},
 
 
 var scaleX= d3.scaleBand().range([0, width]);
-var scaleY= [];
+var scaleY = d3.scaleLinear().range([400, 0]);
 
 var svg = d3.select("body").append("svg")
     .attr("width", width + margin.left + margin.right)
@@ -15,6 +15,8 @@ var svg = d3.select("body").append("svg")
 
 
 
+///////////////////////////////////////////////////Define variables//////////////////////////////////////////////
+
 var nestedData = [];
 var formerDancers;
 var currentDancers;
@@ -23,7 +25,7 @@ clicked=false;
 
 
 
-///////////////////////////////////Answer key maps/////////////////////////////
+///////////////////////////////////////////////////Answer key maps//////////////////////////////////////////////
 var danceEd = [{value: 1, text: "None"},
     {value: 2, text: "Diploma from Dance School"},
     {value: 3, text: "Diploma from Performing Arts School"},
@@ -124,7 +126,7 @@ var challengesFormer= [ {value: 1, text: "Physical Problems"},
 var challengesFormerLabel= challengesFormer.forEach(function (d) {
     Map.set(d.value, d.text);
 });
-
+////////////////////////////////////////////////////////////Answer key maps////////////////////////////////////////////////////////////////
 
 //tool tip
 var div = d3.select("body").append("div")
@@ -133,7 +135,9 @@ var div = d3.select("body").append("div")
 
 
 
-//import the data from the .csv file
+
+
+////////////////////////////////////////////////////////////import data//////////////////////////////////////////////////////////////////////
 d3.csv('./data.csv', function(dataIn){
 
     nestedData = d3.nest()
@@ -144,8 +148,11 @@ d3.csv('./data.csv', function(dataIn){
     currentDancers = nestedData.filter(function(d){return d.key == '1'})[0].values;
     formerDancers = nestedData.filter(function(d){return d.key == '2'})[0].values;
 
-
-
+   //Axis for "What Age do you think you will stop dancing?"
+    scaleY.domain([0, d3.max(dataIn.map(function(d){return +d.C12STPCR}))]);
+    svg.append("g")
+        .attr('class','yaxis')
+        .call(d3.axisLeft(scaleY));
 
     drawPoints(currentDancers);
 
