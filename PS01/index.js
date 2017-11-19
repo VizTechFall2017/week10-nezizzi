@@ -164,9 +164,7 @@ d3.csv('./data.csv', function(dataIn){
         .call(d3.axisLeft(scaleY));
 
     //Axis for "Why do you think you will stop dancing?"
-    scaleY2.domain(dataIn.map(function(d){
-        return Map3.get(+d.C13STOP1)
-    }));
+    scaleY2.domain(dataIn.map(function(d){return Map3.get(+d.C13STOP1)}));
     svg.append("g")
         .attr('class','yaxis')
         .call(d3.axisLeft(scaleY2))
@@ -189,29 +187,41 @@ d3.csv('./data.csv', function(dataIn){
 
 function drawPoints(pointData){
 
-    var lineGenerator = d3.line()
-        .x(0)
-        .y(function(d){return scaleY(+d.C12STPCR)})
+    var lineGenerator1 = d3.line()
+        .x(1)
+        .y(pointData.map(function(d){return Map3.get(+d.C13STOP1)}))
         .curve(d3.curveCardinal);
 
     svg.append('path')
-        .datum(function(d){return scaleY(+d.C12STPCR))
+        .datum(pointData)
+        //console.log(function(d){return scaleY(d.C12STPCR)});
+        console.log(pointData.map(function(d){return Map3.get(+d.C13STOP1)}))
         .attr('class', 'line')
-        .attr('d', lineGenerator)
+        .attr('d', lineGenerator1)
+        .attr('stroke', 'purple')
+        .attr('stroke-wdith', 2);
 
-   /*
-   //create g element for each country
-    var countries = plot.selectAll('.country')
-        .data(timeseries)
-        .enter()
-        .append('g').attr('class','country');
+/*
+    var lineGenerator = d3.line()
+       .x(function(d){return scaleX(new Date(d.key))})
+       .y(function(d){return scaleY(d.value)})
+       .curve(d3.curveCatmullRom);
 
-    //append path per country
-    countries.append('path')
-        .datum(function(d){return d.values})
-        .attr('class','countryPath')
-        .attr('d',function(array){
-            return lineGenerator(array);
+
+    //create g element for each country
+     var countries = plot.selectAll('.country')
+       .data(timeseries)
+       .enter()
+       .append('g').attr('class','country');
+
+     //append path per country
+     countries.append('path')
+       .datum(function(d){return d.values})
+       .attr('class','countryPath')
+       .attr('d',function(array){
+         return lineGenerator(array);
+   })
+
         })
      */
 
