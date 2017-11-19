@@ -171,17 +171,16 @@ d3.csv('./data.csv', function(dataIn){
     svg.append("g")
         .attr('class','yaxis')
         .call(d3.axisLeft(scaleY2))
-        .attr('transform', 'translate(150,0)');
-
+        .attr('transform', 'translate(250,0)');
 
 
     //Axis for "What Challenges do you think will be most serious?"
-    /*scaleY3.domain([0, d3.max(dataIn.map(function(d){return +d.C15BMSCH}))]);
+    scaleY3.domain(dataIn.map(function(d){return Map4.get(+d.C15BMSCH)}));
     svg.append("g")
         .attr('class','yaxis')
         .call(d3.axisLeft(scaleY3))
-        .attr('transform', 'translate(300,0)');
-*/
+        .attr('transform', 'translate(500,0)');
+
 
     //drawPoints(currentDancers);
 
