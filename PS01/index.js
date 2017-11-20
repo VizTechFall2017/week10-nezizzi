@@ -4,11 +4,11 @@ var margin = {top: 66, right: 110, bottom: 20, left: 188},
     innerHeight = height - 2;
 
 
-var scaleX= d3.scaleBand().range([0, width]);
-var scaleY = d3.scaleLinear().range([400, 0]);
-var scaleY2 = d3.scalePoint().range([400, 0]);
-var scaleY3 = d3.scalePoint().range([400, 0]);
-var scaleY4 = d3.scalePoint().range([400, 0]);
+var scaleX= d3.scaleOrdinal().range([0, width]);
+var scaleY = d3.scaleLinear().range([height, 0]);
+var scaleY2 = d3.scalePoint().range([height, 0]);
+var scaleY3 = d3.scalePoint().range([height, 0]);
+var scaleY4 = d3.scalePoint().range([height, 0]);
 
 var svg = d3.select("body").append("svg")
     .attr("width", width + margin.left + margin.right)
@@ -30,7 +30,7 @@ var Map3 = d3.map();
 var Map4 = d3.map();
 var Map5 = d3.map();
 var Map6 = d3.map();
-var axisCoordinates = [{"x": 0}, {"x": 250}, {"x": 500}];
+
 
 ///////////////////////////////////////////////////Answer key maps//////////////////////////////////////////////
 var danceEd = [{value: 1, text: "None"},
@@ -135,7 +135,8 @@ var challengesFormer= [ {value: 1, text: "Physical Problems"},
 var challengesFormerLabel= challengesFormer.forEach(function (d) {
     Map6.set(d.value, d.text);
 });
-////////////////////////////////////////////////////////////Answer key maps////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////Answer key maps end ///////////////////////////////////////////////////////////////
+
 
 //tool tip
 var div = d3.select("body").append("div")
@@ -143,10 +144,7 @@ var div = d3.select("body").append("div")
     .style("opacity", 0);
 
 
-
-
-
-////////////////////////////////////////////////////////////import data//////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////import data//////////////////////////////////////////////////////////////////////
 d3.csv('./data.csv', function(dataIn){
 
     nestedData = d3.nest()
@@ -157,73 +155,83 @@ d3.csv('./data.csv', function(dataIn){
     currentDancers = nestedData.filter(function(d){return d.key == '1'})[0].values;
     formerDancers = nestedData.filter(function(d){return d.key == '2'})[0].values;
 
-   //Axis for "What AGE do you think you will stop dancing?"
-    scaleY.domain([0, d3.max(dataIn.map(function(d){return +d.C12STPCR}))]);
+    scaleX.domain(["What age do you think you will stop Dancing?", "Why do you think you will stop dancing?", "What will be the most serious challenge you will face when you stop dancing?"])
+            .range([0, width/2, width]);
+
     svg.append("g")
-        .attr('class','yaxis')
-        .call(d3.axisLeft(scaleY));
-
-    //Axis for "Why do you think you will stop dancing?"
-    scaleY2.domain(dataIn.map(function(d){return Map3.get(+d.C13STOP1)}));
-    svg.append("g")
-        .attr('class','yaxis')
-        .call(d3.axisLeft(scaleY2))
-        .attr('transform', 'translate(250,0)');
+        . attr('class', 'xaxis')
+        .call(d3.axisBottom(scaleX))
+        .attr('transform', 'translate(0,'+height+')');
 
 
-    //Axis for "What Challenges do you think will be most serious?"
-    scaleY3.domain(dataIn.map(function(d){return Map4.get(+d.C15BMSCH)}));
-    svg.append("g")
-        .attr('class','yaxis')
-        .call(d3.axisLeft(scaleY3))
-        .attr('transform', 'translate(500,0)');
+       //Axis for "What AGE do you think you will stop dancing?"
+        scaleY.domain([0, d3.max(dataIn.map(function(d){return +d.C12STPCR}))]);
+        svg.append("g")
+            .attr('class','yaxis')
+            .call(d3.axisLeft(scaleY));
+
+        //Axis for "Why do you think you will stop dancing?"
+        scaleY2.domain(dataIn.map(function(d){return Map3.get(+d.C13STOP1)}));
+        svg.append("g")
+            .attr('class','yaxis')
+            .call(d3.axisLeft(scaleY2))
+            .attr('transform', 'translate('+width/2+',0)');
 
 
-    drawPoints(currentDancers);
+        //Axis for "What Challenges do you think will be most serious?"
+        scaleY3.domain(dataIn.map(function(d){return Map4.get(+d.C15BMSCH)}));
+        svg.append("g")
+            .attr('class','yaxis')
+            .call(d3.axisLeft(scaleY3))
+            .attr('transform', 'translate('+width+',0)');
 
-});
+        drawPoints(currentDancers);
 
-
-
-function drawPoints(pointData){
-
-    var lineGenerator1 = d3.line()
-        .x(1)
-        .y(pointData.map(function(d){return Map3.get(+d.C13STOP1)}))
-        .curve(d3.curveCardinal);
-
-    svg.append('path')
-        .datum(pointData)
-        //console.log(function(d){return scaleY(d.C12STPCR)});
-        console.log(pointData.map(function(d){return Map3.get(+d.C13STOP1)}))
-        .attr('class', 'line')
-        .attr('d', lineGenerator1)
-        .attr('stroke', 'purple')
-        .attr('stroke-wdith', 2);
-
-/*
-    var lineGenerator = d3.line()
-       .x(function(d){return scaleX(new Date(d.key))})
-       .y(function(d){return scaleY(d.value)})
-       .curve(d3.curveCatmullRom);
+    });
 
 
-    //create g element for each country
-     var countries = plot.selectAll('.country')
-       .data(timeseries)
-       .enter()
-       .append('g').attr('class','country');
 
-     //append path per country
-     countries.append('path')
-       .datum(function(d){return d.values})
-       .attr('class','countryPath')
-       .attr('d',function(array){
-         return lineGenerator(array);
-   })
+    function drawPoints(pointData){
 
-        })
-     */
+        console.log(pointData);
+
+
+        /*
+            var lineGenerator1 = d3.line()
+                .x(0)
+                .y(function(d) { return scaleY(d.C12STPCR)})
+                .curve(d3.curveCardinal);
+
+            svg.append('path')
+                .datum(pointData)
+                .attr('class', 'line')
+                .attr('d', lineGenerator1(pointData))
+                .attr('stroke', 'purple')
+                .attr('stroke-wdith', 2);
+       /*
+
+            var lineGenerator = d3.line()
+               .x(function(d){return scaleX(new Date(d.key))})
+               .y(function(d){return scaleY(d.value)})
+               .curve(d3.curveCatmullRom);
+
+
+            //create g element for each country
+             var countries = plot.selectAll('.country')
+               .data(timeseries)
+               .enter()
+               .append('g').attr('class','country');
+
+             //append path per country
+             countries.append('path')
+               .datum(function(d){return d.values})
+               .attr('class','countryPath')
+               .attr('d',function(array){
+                 return lineGenerator(array);
+           })
+
+                })
+             */
 
 
 
