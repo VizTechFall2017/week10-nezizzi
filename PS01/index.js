@@ -191,12 +191,35 @@ d3.csv('./data.csv', function(dataIn){
 
     });
 
-
+var dimensions= [1,2,3];
 
     function drawPoints(pointData){
 
         console.log(pointData);
 
+
+        // Add grey background lines for context.
+        background = svg.append("g")
+            .attr("class", "background")
+            .selectAll("path")
+            .data(pointData)
+            .enter().append("path")
+            .attr("d", path);
+
+        // Add blue foreground lines for focus.
+        foreground = svg.append("g")
+            .attr("class", "foreground")
+            .selectAll("path")
+            .data(pointData)
+            .enter().append("path")
+            .attr("d", path);
+
+        // Add a group element for each dimension.
+        var g = svg.selectAll(".dimension")
+            .data(dimensions)
+            .enter().append("g")
+            .attr("class", "dimension")
+            .attr("transform", function(d) { return "translate(" + scaleX(d) + ")"; });
 
         /*
             var lineGenerator1 = d3.line()
