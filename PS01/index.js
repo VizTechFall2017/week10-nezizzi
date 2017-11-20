@@ -5,7 +5,7 @@ var margin = {top: 66, right: 180, bottom: 20, left: 110},
 
 
 var scaleX= d3.scaleOrdinal().range([0, width]);
-var scaleY = d3.scaleLinear().range([height, 0]);
+var scaleY1 = d3.scaleLinear().range([height, 0]);
 var scaleY2 = d3.scalePoint().range([height, 0]);
 var scaleY3 = d3.scalePoint().range([height, 0]);
 var scaleY4 = d3.scalePoint().range([height, 0]);
@@ -25,11 +25,7 @@ var formerDancers;
 var currentDancers;
 clicked=false;
 var Map = d3.map();
-var Map2 = d3.map();
-var Map3 = d3.map();
-var Map4 = d3.map();
-var Map5 = d3.map();
-var Map6 = d3.map();
+var linesCurrent;
 
 
 ///////////////////////////////////////////////////Answer key maps//////////////////////////////////////////////
@@ -61,7 +57,7 @@ var nonDanceEd = [{value: 1, text: "Completed Primary School"},
 
 
 var nonDanceEdLabel= nonDanceEd.forEach(function (d) {
-    Map2.set(d.value, d.text);
+    Map.set(d.value, d.text);
 });
 
 
@@ -81,7 +77,7 @@ var whyStopCurrent= [ {value: 1, text: "Feeling to old to Continue"},
 ];
 
 var whyStopCurrentLabel= whyStopCurrent.forEach(function (d) {
-    Map3.set(d.value, d.text);
+    Map.set(d.value, d.text);
 });
 
 
@@ -98,7 +94,7 @@ var challengesCurrent= [ {value: 1, text: "Physical Problems"},
 ];
 
 var challengesCurrentLabel= challengesCurrent.forEach(function (d) {
-    Map4.set(d.value, d.text);
+    Map.set(d.value, d.text);
 });
 
 
@@ -116,7 +112,7 @@ var whyStopFormer= [ {value: 1, text: "Feeling to old to Continue"},
 ];
 
 var whyStopFormerLabel= whyStopFormer.forEach(function (d) {
-    Map5.set(d.value, d.text);
+    Map.set(d.value, d.text);
 });
 
 
@@ -133,7 +129,7 @@ var challengesFormer= [ {value: 1, text: "Physical Problems"},
 ];
 
 var challengesFormerLabel= challengesFormer.forEach(function (d) {
-    Map6.set(d.value, d.text);
+    Map.set(d.value, d.text);
 });
 ////////////////////////////////////////////////////////////Answer key maps end ///////////////////////////////////////////////////////////////
 
@@ -167,13 +163,13 @@ d3.csv('./data.csv', function(dataIn){
 
 
        //Axis for "What AGE do you think you will stop dancing?"
-        scaleY.domain([0, d3.max(dataIn.map(function(d){return +d.C12STPCR}))]);
+        scaleY1.domain([0, d3.max(dataIn.map(function(d){return +d.C12STPCR}))]);
         svg.append("g")
             .attr('class','yaxis')
-            .call(d3.axisLeft(scaleY));
+            .call(d3.axisLeft(scaleY1));
 
         //Axis for "Why do you think you will stop dancing?"
-        scaleY2.domain(dataIn.map(function(d){return Map3.get(+d.C13STOP1)}));
+        scaleY2.domain(dataIn.map(function(d){return Map.get(+d.C13STOP1)}));
         svg.append("g")
             .attr('class','yaxis')
             .call(d3.axisLeft(scaleY2))
@@ -181,7 +177,7 @@ d3.csv('./data.csv', function(dataIn){
 
 
         //Axis for "What Challenges do you think will be most serious?"
-        scaleY3.domain(dataIn.map(function(d){return Map4.get(+d.C15BMSCH)}));
+        scaleY3.domain(dataIn.map(function(d){return Map.get(+d.C15BMSCH)}));
         svg.append("g")
             .attr('class','yaxis')
             .call(d3.axisLeft(scaleY3))
@@ -191,7 +187,14 @@ d3.csv('./data.csv', function(dataIn){
 
     });
 
-var dimensions= [1,2,3];
+var pathData= [ {value: 1, data: "C12STPCR"},
+    {value: 2, data: "C13STOP1"},
+    {value: 3, data: "C15BMSCH"}
+    ];
+
+var pathMap= pathData.forEach(function (d) {
+    Map.set(d.value, d.data);
+});
 
     function drawPoints(pointData){
 
@@ -199,54 +202,50 @@ var dimensions= [1,2,3];
 
         var line= d3.line();
 
-       // Add a group element for each dimension.
+      /* // Add a group element for each dimension.
         var g = svg.selectAll(".dimension")
-            .data(dimensions)
+            .data(pathData)
             .enter().append("g")
             .attr("class", "dimension")
             .attr("transform", function(d) { return "translate(" + scaleX(d) + ")"; });
 
-        // Returns the path for a given data point.
-        function path(d) {
-            return line(dimensions.map(function(p) {
-                return [scaleX(p), scaleY[p](d[p])];
-            }));
-        }
 
-       forground = svg.append("g")
+       linesCurrent = svg.append("g")
             .attr("class", "background")
             .selectAll("path")
-            .data(cars)
+            .data(pointData)
             .enter().append("path")
             .attr("d", path);
 
-        /*
-            var lineGenerator1 = d3.line()
+                // Returns the path for a given data point.
+        function path(d) {
+            return line(pathData.map(function(p) {
+                return [scaleX(p), scaleY1(d.p)];
+            }));
+        }
 
-       /*
-
-            var lineGenerator = d3.line()
-               .x(function(d){return scaleX(new Date(d.key))})
-               .y(function(d){return scaleY(d.value)})
-               .curve(d3.curveCatmullRom);
+         var lineGenerator = d3.line()
+            .x(function(d){return scaleX(new Date(d.key))})
+            .y(function(d){return scaleY(d.value)})
+            .curve(d3.curveCatmullRom);
 
 
-            //create g element for each country
-             var countries = plot.selectAll('.country')
-               .data(timeseries)
-               .enter()
-               .append('g').attr('class','country');
+         //create g element for each country
+          var countries = plot.selectAll('.country')
+            .data(timeseries)
+            .enter()
+            .append('g').attr('class','country');
 
-             //append path per country
-             countries.append('path')
-               .datum(function(d){return d.values})
-               .attr('class','countryPath')
-               .attr('d',function(array){
-                 return lineGenerator(array);
-           })
+          //append path per country
+          countries.append('path')
+            .datum(function(d){return d.values})
+            .attr('class','countryPath')
+            .attr('d',function(array){
+              return lineGenerator(array);
+        })
 
-                })
-             */
+             })
+          */
 
 
 
