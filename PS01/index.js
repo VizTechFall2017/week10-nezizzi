@@ -1,4 +1,4 @@
-var margin = {top: 66, right: 110, bottom: 20, left: 188},
+var margin = {top: 66, right: 180, bottom: 20, left: 110},
     width = document.body.clientWidth - margin.left - margin.right,
     height = 340 - margin.top - margin.bottom,
     innerHeight = height - 2;
@@ -146,6 +146,8 @@ var div = d3.select("body").append("div")
 
 ///////////////////////////////////////////////////////////import data//////////////////////////////////////////////////////////////////////
 d3.csv('./data.csv', function(dataIn){
+
+
 
     nestedData = d3.nest()
         .key(function (d) {
