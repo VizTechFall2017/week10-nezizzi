@@ -197,42 +197,32 @@ var dimensions= [1,2,3];
 
         console.log(pointData);
 
+        var line= d3.line();
 
-        // Add grey background lines for context.
-        background = svg.append("g")
-            .attr("class", "background")
-            .selectAll("path")
-            .data(pointData)
-            .enter().append("path")
-            .attr("d", path);
-
-        // Add blue foreground lines for focus.
-        foreground = svg.append("g")
-            .attr("class", "foreground")
-            .selectAll("path")
-            .data(pointData)
-            .enter().append("path")
-            .attr("d", path);
-
-        // Add a group element for each dimension.
+       // Add a group element for each dimension.
         var g = svg.selectAll(".dimension")
             .data(dimensions)
             .enter().append("g")
             .attr("class", "dimension")
             .attr("transform", function(d) { return "translate(" + scaleX(d) + ")"; });
 
+        // Returns the path for a given data point.
+        function path(d) {
+            return line(dimensions.map(function(p) {
+                return [scaleX(p), scaleY[p](d[p])];
+            }));
+        }
+
+       forground = svg.append("g")
+            .attr("class", "background")
+            .selectAll("path")
+            .data(cars)
+            .enter().append("path")
+            .attr("d", path);
+
         /*
             var lineGenerator1 = d3.line()
-                .x(0)
-                .y(function(d) { return scaleY(d.C12STPCR)})
-                .curve(d3.curveCardinal);
 
-            svg.append('path')
-                .datum(pointData)
-                .attr('class', 'line')
-                .attr('d', lineGenerator1(pointData))
-                .attr('stroke', 'purple')
-                .attr('stroke-wdith', 2);
        /*
 
             var lineGenerator = d3.line()
