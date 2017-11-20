@@ -187,20 +187,22 @@ d3.csv('./data.csv', function(dataIn){
 
     });
 
-var pathData= [ {value: 1, data: "C12STPCR"},
-    {value: 2, data: "C13STOP1"},
-    {value: 3, data: "C15BMSCH"}
-    ];
 
-var pathMap= pathData.forEach(function (d) {
-    Map.set(d.value, d.data);
-});
 
     function drawPoints(pointData){
 
         console.log(pointData);
 
         var line= d3.line();
+
+        var pathData= [ {value: 1, data: "C12STPCR"},
+            {value: 2, data: "C13STOP1"},
+            {value: 3, data: "C15BMSCH"}
+        ];
+
+        var pathMap= pathData.forEach(function (d) {
+            Map.set(d.value, d.data);
+        });
 
       /* // Add a group element for each dimension.
         var g = svg.selectAll(".dimension")
