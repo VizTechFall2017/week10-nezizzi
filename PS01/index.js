@@ -1,6 +1,6 @@
 var margin = {top: 66, right: 180, bottom: 20, left: 110},
     width = document.body.clientWidth - margin.left - margin.right,
-    height = 340 - margin.top - margin.bottom,
+    height = 600 - margin.top - margin.bottom,
     innerHeight = height - 2;
 
 
@@ -214,25 +214,24 @@ d3.csv('./data.csv', function(dataIn){
         });
 
       // Add a group element for each dimension.
-        var g = svg.selectAll(".dimension")
-            .data(pathData)
-            .enter().append("g")
-            .attr("class", "dimension")
-            .attr("transform", function(d) { return "translate(" + scaleX(d) + ")"; });
-
-
-        linesCurrent = svg.append("g")
-            .attr("class", "background")
+         linesCurrent = svg.append("g")
+            .attr("class", "current")
             .selectAll("path")
             .data(pointData)
-            .enter()
-            .append("path")
-            .transition()
-            .ease(d3.easeSin)
+             .enter();
+
+
+        linesCurrent.append("path")
             .attr("d", path)
             .attr('fill','none')
             .attr('stroke','purple')
-            .attr('opacity', '.5');
+            .attr('opacity', '.35')
+            .on('mouseover', function(d){
+                d3.select(this).attr('opacity', '1');
+                           })
+            .on('mouseout', function(d){
+                d3.select(this).attr('opacity', '.35');
+            });
 
 
 
