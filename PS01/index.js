@@ -175,7 +175,7 @@ d3.csv('./data.csv', function(dataIn){
             .call(d3.axisLeft(scaleY1));
 
         //Axis for "Why do you think you will stop dancing?"
-        scaleY2.domain(dataIn.map(function(d){return Map1.get(+d.C13STOP1)}));
+        scaleY2.domain(dataIn.map(function(d){return Map3.get(+d.C13STOP1)}));
         svg.append("g")
             .attr('class','yaxis')
             .call(d3.axisLeft(scaleY2))
@@ -183,7 +183,7 @@ d3.csv('./data.csv', function(dataIn){
 
 
         //Axis for "What Challenges do you think will be most serious?"
-        scaleY3.domain(dataIn.map(function(d){return Map2.get(+d.C15BMSCH)}));
+        scaleY3.domain(dataIn.map(function(d){return Map4.get(+d.C15BMSCH)}));
         svg.append("g")
             .attr('class','yaxis')
             .call(d3.axisLeft(scaleY3))
@@ -225,7 +225,8 @@ d3.csv('./data.csv', function(dataIn){
             .enter().append("path")
             .attr("d", path)
             .attr('fill','none')
-            .attr('stroke','purple');
+            .attr('stroke','purple')
+            .attr('opacity', '.5');
 
         // Returns the path for a given data point.
         function path(d) {
@@ -241,12 +242,12 @@ d3.csv('./data.csv', function(dataIn){
                     //console.log(d[p.data]);
                     //console.log(Map2.get(+d[p.data]));
                     //console.log(Map3.get(+d[p.data]));
-                    return [scaleX("Why do you think you will stop dancing?"), scaleY2(Map2.get(+d[p.data]))];
+                    return [scaleX("Why do you think you will stop dancing?"), scaleY2(Map3.get(+d[p.data]))];
                 }
                 if(p.value ==3){
                     //console.log(d[p.data]);
                     //console.log(Map3.get(+d[p.data]));
-                    return [scaleX("What will be the most serious challenge you will face when you stop dancing?"), scaleY3(Map3.get(+d[p.data]))];
+                    return [scaleX("What will be the most serious challenge you will face when you stop dancing?"), scaleY3(Map4.get(+d[p.data]))];
                 }
             }));
         }
