@@ -234,18 +234,18 @@ d3.csv('./data.csv', function(dataIn){
                 //console.log(p,scaleX(p.value),scaleY1(d[p.data]));
 
                 if(p.value ==1){
-                    console.log(d[p.data]);
+                    //console.log(d[p.data]);
                     return [scaleX("What age do you think you will stop Dancing?"), scaleY1(d[p.data])];
                 }
                 if(p.value ==2){
                     //console.log(d[p.data]);
-                    console.log(Map2.get(+d[p.data]));
+                    //console.log(Map2.get(+d[p.data]));
                     //console.log(Map3.get(+d[p.data]));
                     return [scaleX("Why do you think you will stop dancing?"), scaleY2(Map2.get(+d[p.data]))];
                 }
                 if(p.value ==3){
                     //console.log(d[p.data]);
-                    console.log(Map3.get(+d[p.data]));
+                    //console.log(Map3.get(+d[p.data]));
                     return [scaleX("What will be the most serious challenge you will face when you stop dancing?"), scaleY3(Map3.get(+d[p.data]))];
                 }
             }));
