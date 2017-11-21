@@ -25,6 +25,12 @@ var formerDancers;
 var currentDancers;
 clicked=false;
 var Map = d3.map();
+var Map1 = d3.map();
+var Map2 = d3.map();
+var Map3 = d3.map();
+var Map4 = d3.map();
+var Map5 = d3.map();
+var Map6 = d3.map();
 var linesCurrent;
 
 
@@ -42,7 +48,7 @@ var danceEd = [{value: 1, text: "None"},
 
 
 var danceEdLabel= danceEd.forEach(function (d) {
-    Map.set(d.value, d.text);
+    Map1.set(d.value, d.text);
 });
 
 
@@ -57,7 +63,7 @@ var nonDanceEd = [{value: 1, text: "Completed Primary School"},
 
 
 var nonDanceEdLabel= nonDanceEd.forEach(function (d) {
-    Map.set(d.value, d.text);
+    Map2.set(d.value, d.text);
 });
 
 
@@ -77,7 +83,7 @@ var whyStopCurrent= [ {value: 1, text: "Feeling to old to Continue"},
 ];
 
 var whyStopCurrentLabel= whyStopCurrent.forEach(function (d) {
-    Map.set(d.value, d.text);
+    Map3.set(d.value, d.text);
 });
 
 
@@ -94,7 +100,7 @@ var challengesCurrent= [ {value: 1, text: "Physical Problems"},
 ];
 
 var challengesCurrentLabel= challengesCurrent.forEach(function (d) {
-    Map.set(d.value, d.text);
+    Map4.set(d.value, d.text);
 });
 
 
@@ -112,7 +118,7 @@ var whyStopFormer= [ {value: 1, text: "Feeling to old to Continue"},
 ];
 
 var whyStopFormerLabel= whyStopFormer.forEach(function (d) {
-    Map.set(d.value, d.text);
+    Map5.set(d.value, d.text);
 });
 
 
@@ -129,7 +135,7 @@ var challengesFormer= [ {value: 1, text: "Physical Problems"},
 ];
 
 var challengesFormerLabel= challengesFormer.forEach(function (d) {
-    Map.set(d.value, d.text);
+    Map6.set(d.value, d.text);
 });
 ////////////////////////////////////////////////////////////Answer key maps end ///////////////////////////////////////////////////////////////
 
@@ -169,7 +175,7 @@ d3.csv('./data.csv', function(dataIn){
             .call(d3.axisLeft(scaleY1));
 
         //Axis for "Why do you think you will stop dancing?"
-        scaleY2.domain(dataIn.map(function(d){return Map.get(+d.C13STOP1)}));
+        scaleY2.domain(dataIn.map(function(d){return Map1.get(+d.C13STOP1)}));
         svg.append("g")
             .attr('class','yaxis')
             .call(d3.axisLeft(scaleY2))
@@ -177,7 +183,7 @@ d3.csv('./data.csv', function(dataIn){
 
 
         //Axis for "What Challenges do you think will be most serious?"
-        scaleY3.domain(dataIn.map(function(d){return Map.get(+d.C15BMSCH)}));
+        scaleY3.domain(dataIn.map(function(d){return Map2.get(+d.C15BMSCH)}));
         svg.append("g")
             .attr('class','yaxis')
             .call(d3.axisLeft(scaleY3))
@@ -204,7 +210,7 @@ d3.csv('./data.csv', function(dataIn){
             Map.set(d.value, d.data);
         });
 
-      /* // Add a group element for each dimension.
+      // Add a group element for each dimension.
         var g = svg.selectAll(".dimension")
             .data(pathData)
             .enter().append("g")
@@ -213,7 +219,7 @@ d3.csv('./data.csv', function(dataIn){
 
 
        linesCurrent = svg.append("g")
-            .attr("class", "background")
+            .attr("class", "lines")
             .selectAll("path")
             .data(pointData)
             .enter().append("path")
@@ -221,33 +227,37 @@ d3.csv('./data.csv', function(dataIn){
 
                 // Returns the path for a given data point.
         function path(d) {
+
             return line(pathData.map(function(p) {
-                return [scaleX(p), scaleY1(d.p)];
+                console.log(d, d.C15BMSCH, d[p.data]);
+                console.log(p, scaleX(p), scaleY1(d[p.data]));
+                return [scaleX(p), scaleY1(d[p.data])];
             }));
         }
 
-         var lineGenerator = d3.line()
-            .x(function(d){return scaleX(new Date(d.key))})
-            .y(function(d){return scaleY(d.value)})
-            .curve(d3.curveCatmullRom);
+        /*
+               var lineGenerator = d3.line()
+                  .x(function(d){return scaleX(new Date(d.key))})
+                  .y(function(d){return scaleY1(d.value)})
+                  .curve(d3.curveCatmullRom);
 
 
-         //create g element for each country
-          var countries = plot.selectAll('.country')
-            .data(timeseries)
-            .enter()
-            .append('g').attr('class','country');
+                       //create g element for each country
+                        var countries = plot.selectAll('.country')
+                          .data(timeseries)
+                          .enter()
+                          .append('g').attr('class','country');
 
-          //append path per country
-          countries.append('path')
-            .datum(function(d){return d.values})
-            .attr('class','countryPath')
-            .attr('d',function(array){
-              return lineGenerator(array);
-        })
+                        //append path per country
+                        countries.append('path')
+                          .datum(function(d){return d.values})
+                          .attr('class','countryPath')
+                          .attr('d',function(array){
+                            return lineGenerator(array);
+                      })
 
-             })
-          */
+                           })
+                        */
 
 
 
