@@ -199,7 +199,9 @@ d3.csv('./data.csv', function(dataIn){
 
 
 
-        var line= d3.line();
+        var line= d3.line()
+            //.curve(d3.curveCatmullRom);
+            .curve(d3.curveCardinal);
 
         var pathData= [ {value: 1, data: "C12STPCR"},
             {value: 2, data: "C13STOP1"},
@@ -222,11 +224,16 @@ d3.csv('./data.csv', function(dataIn){
             .attr("class", "background")
             .selectAll("path")
             .data(pointData)
-            .enter().append("path")
+            .enter()
+            .append("path")
+            .transition()
+            .ease(d3.easeSin)
             .attr("d", path)
             .attr('fill','none')
             .attr('stroke','purple')
             .attr('opacity', '.5');
+
+
 
         // Returns the path for a given data point.
         function path(d) {
@@ -249,7 +256,7 @@ d3.csv('./data.csv', function(dataIn){
                     //console.log(Map3.get(+d[p.data]));
                     return [scaleX("What will be the most serious challenge you will face when you stop dancing?"), scaleY3(Map4.get(+d[p.data]))];
                 }
-            }));
+            }))
         }
 
         /*
