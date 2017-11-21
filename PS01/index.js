@@ -203,6 +203,7 @@ d3.csv('./data.csv', function(dataIn){
             //.curve(d3.curveCatmullRom);
             .curve(d3.curveCardinal);
 
+
         var pathData= [ {value: 1, data: "C12STPCR"},
             {value: 2, data: "C13STOP1"},
             {value: 3, data: "C15BMSCH"}
@@ -258,31 +259,6 @@ d3.csv('./data.csv', function(dataIn){
                 }
             }))
         }
-
-        /*
-               var lineGenerator = d3.line()
-                  .x(function(d){return scaleX(new Date(d.key))})
-                  .y(function(d){return scaleY1(d.value)})
-                  .curve(d3.curveCatmullRom);
-
-
-                       //create g element for each country
-                        var countries = plot.selectAll('.country')
-                          .data(timeseries)
-                          .enter()
-                          .append('g').attr('class','country');
-
-                        //append path per country
-                        countries.append('path')
-                          .datum(function(d){return d.values})
-                          .attr('class','countryPath')
-                          .attr('d',function(array){
-                            return lineGenerator(array);
-                      })
-
-                           })
-                        */
-
 
 
 }
