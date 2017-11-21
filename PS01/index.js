@@ -218,20 +218,30 @@ d3.csv('./data.csv', function(dataIn){
             .attr("transform", function(d) { return "translate(" + scaleX(d) + ")"; });
 
 
-       linesCurrent = svg.append("g")
-            .attr("class", "lines")
+        linesCurrent = svg.append("g")
+            .attr("class", "background")
             .selectAll("path")
             .data(pointData)
             .enter().append("path")
-            .attr("d", path);
+            .attr("d", path)
+            .attr('fill','none')
+            .attr('stroke','blue');
 
-                // Returns the path for a given data point.
+        // Returns the path for a given data point.
         function path(d) {
 
             return line(pathData.map(function(p) {
-                console.log(d, d.C15BMSCH, d[p.data]);
-                console.log(p, scaleX(p), scaleY1(d[p.data]));
-                return [scaleX(p), scaleY1(d[p.data])];
+                //console.log(p.data, d[p.data], scaleY1(d[p.data]));
+                console.log(p,scaleX(p.value),scaleY1(d[p.data]));
+                if(p.value ==1){
+                    return [scaleX("What age do you think you will stop Dancing?"), scaleY1(d[p.data])];
+                }
+                if(p.value ==2){
+                    return [scaleX("Why do you think you will stop dancing?"), scaleY1(d[p.data])];
+                }
+                if(p.value ==3){
+                    return [scaleX("What will be the most serious challenge you will face when you stop dancing?"), scaleY1(d[p.data])];
+                }
             }));
         }
 
